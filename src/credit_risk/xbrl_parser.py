@@ -1,4 +1,4 @@
-"""Parser XBRL per estrazione dati finanziari"""
+"""XBRL parser for financial data extraction"""
 
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
@@ -63,12 +63,12 @@ class XBRLParser:
         self.contexts = self._parse_contexts()
     
     def _parse_contexts(self) -> dict:
-        """Estrae context senza dimensioni"""
+        """Extract contexts without dimensions"""
         contexts = {}
         for ctx in self.root.findall(f".//{{{XBRLI}}}context"):
             ctx_id = ctx.attrib.get("id")
             
-            # Salta context con dimensioni
+            # Skip contexts with dimensions
             if ctx.find(f".//{{{XBRLDI}}}explicitMember") is not None:
                 continue
             
@@ -88,7 +88,7 @@ class XBRLParser:
         return contexts
     
     def parse(self) -> list[Financials]:
-        """Estrae tutti i periodi finanziari"""
+        """Extract all financial periods"""
         data_by_period: dict[str, dict] = {}
         
         for elem in self.root.iter():
@@ -126,7 +126,7 @@ class XBRLParser:
         results = []
         for period, data in data_by_period.items():
             f = Financials(period_end=period, **data)
-            if f.field_count() >= 3:  # Almeno 3 campi popolati
+            if f.field_count() >= 3:  # At least 3 fields populated
                 results.append(f)
         
         return sorted(results, key=lambda x: x.period_end, reverse=True)

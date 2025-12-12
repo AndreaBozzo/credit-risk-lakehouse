@@ -1,4 +1,4 @@
-"""Operazioni database DuckDB"""
+"""DuckDB database operations"""
 
 import duckdb
 from pathlib import Path

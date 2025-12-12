@@ -1,4 +1,4 @@
-"""Calcolo indici finanziari"""
+"""Financial ratio calculations"""
 
 from dataclasses import dataclass
 from .xbrl_parser import Financials
@@ -25,7 +25,7 @@ def safe_divide(numerator: int | None, denominator: int | None) -> float | None:
 
 
 def calculate_ratios(f: Financials) -> FinancialRatios:
-    """Calcola tutti gli indici da un Financials"""
+    """Calculate all ratios from a Financials object"""
     return FinancialRatios(
         period_end=f.period_end,
         current_ratio=safe_divide(f.current_assets, f.current_liabilities),

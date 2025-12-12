@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""CLI per parsing XBRL e calcolo ratios"""
+"""CLI for XBRL parsing and ratio calculation"""
 
 import argparse
 from pathlib import Path
@@ -58,14 +58,14 @@ def main():
                 ratios = calculate_ratios(fin)
                 db.upsert_ratios(cik, ratios, company)
             
-            print(f"✓ {len(financials_list)} periodi")
+            print(f"✓ {len(financials_list)} periods")
             total_periods += len(financials_list)
             
         except Exception as e:
             print(f"❌ {e}")
     
     db.close()
-    print(f"\n✓ {total_periods} periodi totali elaborati")
+    print(f"\n✓ {total_periods} total periods processed")
 
 
 if __name__ == "__main__":

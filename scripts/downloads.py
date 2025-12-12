@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""CLI per download filing SEC"""
+"""CLI for SEC filing download"""
 
 import argparse
 from pathlib import Path
@@ -83,7 +83,7 @@ def main():
         success += 1
     
     db.close()
-    print(f"\n✓ {success}/{len(ciks)} filing scaricati")
+    print(f"\n✓ {success}/{len(ciks)} filings downloaded")
 
 
 if __name__ == "__main__":

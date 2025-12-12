@@ -1,14 +1,14 @@
 # Credit Risk Lakehouse
 
-Pipeline per l'analisi del rischio creditizio basata su dati finanziari pubblici SEC EDGAR.
+Pipeline for credit risk analysis based on SEC EDGAR public financial data.
 
 ## Features
 
-- Download automatico filing 10-K da SEC EDGAR
-- Parsing XBRL con estrazione dati finanziari normalizzati
-- Calcolo indici: current ratio, D/E, ROE, ROA, margini operativi
-- Storage locale in DuckDB (zero infrastruttura)
-- Pronto per scaling su Databricks/Spark
+- Automatic 10-K filing download from SEC EDGAR
+- XBRL parsing with normalized financial data extraction
+- Ratio calculations: current ratio, D/E, ROE, ROA, operating margins
+- Local storage in DuckDB (zero infrastructure)
+- Ready for scaling on Databricks/Spark
 
 ## Quick Start
 ```bash
@@ -19,16 +19,16 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
-# Download filing (singola azienda)
-python scripts/download.py --cik 0000320193  # Apple
+# Download filing (single company)
+python scripts/downloads.py --cik 0000320193  # Apple
 
 # Download top 20 US companies
-python scripts/download.py --all
+python scripts/downloads.py --all
 
-# Parse e calcola ratios
+# Parse and calculate ratios
 python scripts/parse.py --all
 
-# Query dati
+# Query data
 python -c "
 import duckdb
 conn = duckdb.connect('data/credit_risk.duckdb')
@@ -44,70 +44,70 @@ print(conn.execute('''
 "
 ```
 
-## Struttura
+## Project Structure
 ```
 credit-risk-lakehouse/
 ├── src/credit_risk/
-│   ├── sec_client.py     # API SEC EDGAR
-│   ├── xbrl_parser.py    # Parser XBRL
-│   ├── ratios.py         # Calcolo indici
+│   ├── sec_client.py     # SEC EDGAR API client
+│   ├── xbrl_parser.py    # XBRL parser
+│   ├── ratios.py         # Ratio calculations
 │   └── db.py             # DuckDB operations
 ├── scripts/
-│   ├── downloads.py      # CLI download
-│   └── parse.py          # CLI parsing
+│   ├── downloads.py      # Download CLI
+│   └── parse.py          # Parsing CLI
 ├── notebooks/
-│   └── 01_exploratory_analysis.ipynb  # Analisi esplorativa
+│   └── 01_exploratory_analysis.ipynb  # Exploratory analysis
 ├── data/
-│   ├── raw/xbrl/         # Filing XBRL grezzi
+│   ├── raw/xbrl/         # Raw XBRL filings
 │   └── credit_risk.duckdb
 └── tests/
 ```
 
-## Analisi Esplorativa
+## Exploratory Analysis
 
-Il notebook `notebooks/01_exploratory_analysis.ipynb` contiene un'analisi completa del dataset con:
+The notebook `notebooks/01_exploratory_analysis.ipynb` contains a complete dataset analysis with:
 
-- **Overview**: 20+ aziende US, ~60 periodi finanziari
-- **Distribuzione indici**: istogrammi di tutti i ratio finanziari
-- **Ranking ROE**: classifica aziende per Return on Equity
-- **Correlazioni**: matrice correlazione tra indici
-- **Leverage vs Profittabilità**: scatter plot D/E vs ROE
-- **Trend temporali**: evoluzione medie nel tempo
-- **Anomalie**: identificazione outlier (bassa liquidità, alto leverage)
-- **Risk Score**: profilo rischio sintetico 0-100
+- **Overview**: 20+ US companies, ~60 financial periods
+- **Ratio distributions**: histograms of all financial ratios
+- **ROE Ranking**: company ranking by Return on Equity
+- **Correlations**: correlation matrix between ratios
+- **Leverage vs Profitability**: D/E vs ROE scatter plot
+- **Time trends**: average evolution over time
+- **Anomalies**: outlier identification (low liquidity, high leverage)
+- **Risk Score**: synthetic risk profile 0-100
 
-### Esempi di Output
+### Sample Output
 
-#### ROE Ranking per Azienda
+#### ROE Ranking by Company
 ![ROE Ranking](notebooks/fig_roe_ranking.png)
 
-#### Matrice di Correlazione tra Indici
+#### Correlation Matrix Between Ratios
 ![Correlation Matrix](notebooks/fig_correlation.png)
 
 #### Credit Risk Score
 ![Risk Score](notebooks/fig_risk_score.png)
 
-## Indici calcolati
+## Calculated Ratios
 
-| Indice | Formula | Uso |
-|--------|---------|-----|
-| Current Ratio | Current Assets / Current Liabilities | Liquidità |
+| Ratio | Formula | Purpose |
+|-------|---------|---------|
+| Current Ratio | Current Assets / Current Liabilities | Liquidity |
 | Debt to Equity | Total Liabilities / Shareholders Equity | Leverage |
 | Debt to Assets | Total Liabilities / Total Assets | Leverage |
-| Gross Margin | Gross Profit / Revenue | Profittabilità |
-| Operating Margin | Operating Income / Revenue | Profittabilità |
-| Net Margin | Net Income / Revenue | Profittabilità |
-| ROE | Net Income / Shareholders Equity | Rendimento |
-| ROA | Net Income / Total Assets | Efficienza |
-| OCF to Debt | Operating Cash Flow / Total Liabilities | Solvibilità |
+| Gross Margin | Gross Profit / Revenue | Profitability |
+| Operating Margin | Operating Income / Revenue | Profitability |
+| Net Margin | Net Income / Revenue | Profitability |
+| ROE | Net Income / Shareholders Equity | Return |
+| ROA | Net Income / Total Assets | Efficiency |
+| OCF to Debt | Operating Cash Flow / Total Liabilities | Solvency |
 
 ## Roadmap
 
 - [ ] Altman Z-Score
 - [ ] Piotroski F-Score  
-- [ ] Time-series features (CAGR, volatilità)
-- [ ] ML model per default prediction
-- [ ] Export Databricks Solution Accelerator
+- [ ] Time-series features (CAGR, volatility)
+- [ ] ML model for default prediction
+- [ ] Export as Databricks Solution Accelerator
 
 ## License
 

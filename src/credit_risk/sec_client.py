@@ -1,4 +1,4 @@
-"""Client SEC EDGAR API"""
+"""SEC EDGAR API client"""
 
 import requests
 import time
@@ -28,13 +28,13 @@ class SECClient:
         return requests.get(url, headers=self.headers)
     
     def get_company_info(self, cik: str) -> dict | None:
-        """Metadata azienda + lista filing"""
+        """Get company metadata and filing list"""
         url = f"{self.BASE_URL}/submissions/CIK{cik}.json"
         resp = self._get(url)
         return resp.json() if resp.status_code == 200 else None
     
     def get_latest_10k(self, cik: str) -> Filing | None:
-        """Trova l'ultimo 10-K"""
+        """Find the latest 10-K filing"""
         data = self.get_company_info(cik)
         if not data:
             return None
@@ -52,7 +52,7 @@ class SECClient:
         return None
     
     def download_xbrl(self, filing: Filing) -> str | None:
-        """Scarica file XBRL instance"""
+        """Download XBRL instance file"""
         cik_clean = filing.cik.lstrip("0")
         index_url = f"{self.ARCHIVES_URL}/{cik_clean}/{filing.accession}/index.json"
         

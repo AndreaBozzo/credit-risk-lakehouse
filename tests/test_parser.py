@@ -1,4 +1,4 @@
-"""Test per il parser XBRL"""
+"""Tests for XBRL parser"""
 
 import pytest
 from pathlib import Path
@@ -58,7 +58,7 @@ class TestRatios:
 class TestXBRLParser:
     @pytest.fixture
     def sample_xbrl(self):
-        """Carica un file XBRL di test se esiste"""
+        """Load a test XBRL file if it exists"""
         test_file = Path("data/raw/xbrl/0000320193_2025-10-31.xml")  # Apple
         if test_file.exists():
             return test_file.read_text()
@@ -70,7 +70,7 @@ class TestXBRLParser:
         
         assert len(results) >= 1
         
-        # Verifica ultimo periodo
+        # Verify latest period
         latest = results[0]
         assert latest.revenue is not None
         assert latest.revenue > 0
