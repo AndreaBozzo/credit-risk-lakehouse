@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Data (troppo grandi per git)
+data/raw/
+data/*.duckdb
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+EOF
